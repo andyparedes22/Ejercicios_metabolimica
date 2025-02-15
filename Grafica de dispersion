@@ -1,0 +1,37 @@
+#Llamado de datos 
+#Cread: Andrea Paredes 
+
+install.packages("pacman")
+#llama otros paquetes y si no los tengo, los va a instalar
+
+library("pacman")
+
+p_load("readr")
+
+Datos_PCR <- read.csv(file = "https://raw.githubusercontent.com/ManuelLaraMVZ/Transcript-mica/refs/heads/main/Resultados_tiempo_real.csv")
+View(Datos_PCR)
+head(Datos_PCR)
+
+p_load("dplyr") #facilita el manejo de los datos 
+
+Tabla_filtrada <- Datos_PCR %>% #crea una base de datos, apartor de "Datos PCR" y esa base de datos hasle lo siguente 
+  select("Ciclos","P14")
+
+head(Tabla_filtrada)
+
+p_load("ggplot2")
+
+Grafica_1 <- ggplot(data = Tabla_filtrada, aes(x = Ciclos, y = P14)) +
+  geom_line(color = "#DB7093") +  # Dibuja la línea en color azul
+  geom_point(color = "#9370DB") +  # Añade puntos en color rojo para cada observación
+  labs(title = "Curva de amplificación del Bulbo Raquideo",
+       subtitle= "Creado por: Andrea Paredes",
+       caption= "Fecha:14 de feb de 2025",
+       x = "Ciclos",
+       y = "Fluorescencia") +  # Añade títulos y etiquetas a los ejes
+  theme_minimal() 
+
+Grafica_1
+
+ggsave(Grafica_1,plot = "P14.jpeg",
+       width = 5, length=4)
